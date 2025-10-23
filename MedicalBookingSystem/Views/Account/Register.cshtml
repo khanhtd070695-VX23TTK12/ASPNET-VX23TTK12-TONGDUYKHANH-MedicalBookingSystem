@@ -1,0 +1,292 @@
+﻿@model MedicalBookingSystem.Controllers.RegisterViewModel
+@{
+    ViewData["Title"] = "Đăng Ký Tài Khoản";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white text-center py-4">
+                    <h2 class="mb-0"><i class="fas fa-user-plus me-2"></i>ĐĂNG KÝ TÀI KHOẢN</h2>
+                    <p class="mb-0 mt-2">Tạo tài khoản để đặt lịch khám dễ dàng</p>
+                </div>
+                <div class="card-body p-5">
+                    <form id="registerForm" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <!-- Thông tin cá nhân -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="FullName" class="form-label fw-bold">
+                                        <i class="fas fa-user me-2"></i>Họ và tên *
+                                    </label>
+                                    <input asp-for="FullName" class="form-control form-control-lg"
+                                           placeholder="Nhập họ và tên đầy đủ" />
+                                    <span asp-validation-for="FullName" class="text-danger small validation-message"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Email" class="form-label fw-bold">
+                                        <i class="fas fa-envelope me-2"></i>Email *
+                                    </label>
+                                    <input asp-for="Email" class="form-control form-control-lg"
+                                           placeholder="example@email.com" />
+                                    <span asp-validation-for="Email" class="text-danger small validation-message"></span>
+                                    <div class="form-text">Chúng tôi sẽ gửi email xác nhận đến địa chỉ này</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="PhoneNumber" class="form-label fw-bold">
+                                        <i class="fas fa-phone me-2"></i>Số điện thoại *
+                                    </label>
+                                    <input asp-for="PhoneNumber" class="form-control form-control-lg"
+                                           placeholder="0912345678" />
+                                    <span asp-validation-for="PhoneNumber" class="text-danger small validation-message"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="DateOfBirth" class="form-label fw-bold">
+                                        <i class="fas fa-birthday-cake me-2"></i>Ngày sinh *
+                                    </label>
+                                    <input asp-for="DateOfBirth" type="date" class="form-control form-control-lg"
+                                           max="@DateTime.Now.AddYears(-18).ToString("yyyy-MM-dd")" />
+                                    <span asp-validation-for="DateOfBirth" class="text-danger small validation-message"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Gender" class="form-label fw-bold">
+                                        <i class="fas fa-venus-mars me-2"></i>Giới tính *
+                                    </label>
+                                    <select asp-for="Gender" class="form-select form-select-lg">
+                                        <option value="">-- Chọn giới tính --</option>
+                                        <option value="Male">Nam</option>
+                                        <option value="Female">Nữ</option>
+                                        <option value="Other">Khác</option>
+                                    </select>
+                                    <span asp-validation-for="Gender" class="text-danger small validation-message"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Address" class="form-label fw-bold">
+                                        <i class="fas fa-home me-2"></i>Địa chỉ *
+                                    </label>
+                                    <input asp-for="Address" class="form-control form-control-lg"
+                                           placeholder="Số nhà, đường, phường/xã, quận/huyện, tỉnh/thành phố" />
+                                    <span asp-validation-for="Address" class="text-danger small validation-message"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Mật khẩu -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="Password" class="form-label fw-bold">
+                                        <i class="fas fa-lock me-2"></i>Mật khẩu *
+                                    </label>
+                                    <input asp-for="Password" type="password" class="form-control form-control-lg"
+                                           placeholder="Ít nhất 6 ký tự" />
+                                    <span asp-validation-for="Password" class="text-danger small validation-message"></span>
+                                    <div class="password-strength mt-2">
+                                        <div class="progress" style="height: 5px;">
+                                            <div class="progress-bar" id="passwordStrengthBar"></div>
+                                        </div>
+                                        <small class="text-muted" id="passwordStrengthText">Độ mạnh mật khẩu</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mb-3">
+                                    <label asp-for="ConfirmPassword" class="form-label fw-bold">
+                                        <i class="fas fa-lock me-2"></i>Xác nhận mật khẩu *
+                                    </label>
+                                    <input asp-for="ConfirmPassword" type="password" class="form-control form-control-lg"
+                                           placeholder="Nhập lại mật khẩu" />
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger small validation-message"></span>
+                                    <div class="form-text" id="passwordMatchText"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Điều khoản -->
+                        <div class="form-group mb-4">
+                            <div class="form-check">
+                                <input asp-for="AcceptTerms" class="form-check-input" type="checkbox" />
+                                <label asp-for="AcceptTerms" class="form-check-label">
+                                    Tôi đồng ý với <a href="#" class="text-primary">Điều khoản sử dụng</a>
+                                    và <a href="#" class="text-primary">Chính sách bảo mật</a>
+                                </label>
+                                <span asp-validation-for="AcceptTerms" class="text-danger small validation-message"></span>
+                            </div>
+                        </div>
+
+                        <!-- Nút đăng ký -->
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg py-3 fw-bold">
+                                <i class="fas fa-user-plus me-2"></i>ĐĂNG KÝ NGAY
+                            </button>
+                        </div>
+
+                        <!-- Đăng nhập -->
+                        <div class="text-center mt-4">
+                            <p class="mb-0">
+                                Đã có tài khoản?
+                                <a href="/Account/Login" class="text-primary fw-bold">Đăng nhập ngay</a>
+                            </p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Hướng dẫn -->
+            <div class="card mt-4 border-0 bg-light">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fas fa-info-circle me-2 text-primary"></i>Tại sao nên đăng ký?</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-check text-success me-2"></i>Đặt lịch khám nhanh chóng</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Quản lý lịch sử khám bệnh</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Nhận thông báo từ bác sĩ</li>
+                        <li><i class="fas fa-check text-success me-2"></i>Bảo mật thông tin cá nhân</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Real-time validation và password strength
+        $(document).ready(function () {
+            // Password strength indicator
+            $('#Password').on('input', function () {
+                var password = $(this).val();
+                var strength = 0;
+                var text = '';
+
+                if (password.length >= 6) strength += 25;
+                if (password.match(/[a-z]/)) strength += 25;
+                if (password.match(/[A-Z]/)) strength += 25;
+                if (password.match(/[0-9]/)) strength += 25;
+
+                $('#passwordStrengthBar').css('width', strength + '%');
+
+                if (strength < 50) {
+                    $('#passwordStrengthBar').removeClass('bg-warning bg-success').addClass('bg-danger');
+                    text = 'Mật khẩu yếu';
+                } else if (strength < 75) {
+                    $('#passwordStrengthBar').removeClass('bg-danger bg-success').addClass('bg-warning');
+                    text = 'Mật khẩu trung bình';
+                } else {
+                    $('#passwordStrengthBar').removeClass('bg-danger bg-warning').addClass('bg-success');
+                    text = 'Mật khẩu mạnh';
+                }
+
+                $('#passwordStrengthText').text(text);
+            });
+
+            // Confirm password real-time check
+            $('#ConfirmPassword').on('input', function () {
+                var password = $('#Password').val();
+                var confirmPassword = $(this).val();
+
+                if (confirmPassword === '') {
+                    $('#passwordMatchText').text('').removeClass('text-danger text-success');
+                } else if (password === confirmPassword) {
+                    $('#passwordMatchText').text('✓ Mật khẩu khớp').removeClass('text-danger').addClass('text-success');
+                } else {
+                    $('#passwordMatchText').text('✗ Mật khẩu không khớp').removeClass('text-success').addClass('text-danger');
+                }
+            });
+
+            // Email format validation
+            $('#Email').on('blur', function () {
+                var email = $(this).val();
+                var emailRegex = /^[^\s@@]+@@[^\s@@]+\.[^\s@@]+$/;
+
+                if (email && !emailRegex.test(email)) {
+                    $(this).addClass('is-invalid');
+                } else {
+                    $(this).removeClass('is-invalid');
+                }
+            });
+
+            // Phone number validation
+            $('#PhoneNumber').on('blur', function () {
+                var phone = $(this).val();
+                var phoneRegex = /^(0|\+84)[3|5|7|8|9][0-9]{8}$/;
+
+                if (phone && !phoneRegex.test(phone)) {
+                    $(this).addClass('is-invalid');
+                } else {
+                    $(this).removeClass('is-invalid');
+                }
+            });
+
+            // Real-time form validation
+            $('form input, form select').on('blur', function () {
+                $(this).trigger('change');
+            });
+        });
+    </script>
+
+    <style>
+        .validation-message {
+            font-size: 0.875em;
+            margin-top: 0.25rem;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+
+        .form-check-input:checked {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .card {
+            border-radius: 15px;
+        }
+
+        .card-header {
+            border-radius: 15px 15px 0 0 !important;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            border: none;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+            }
+
+        .progress {
+            background-color: #e9ecef;
+            border-radius: 10px;
+        }
+
+        .progress-bar {
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+    </style>
+}

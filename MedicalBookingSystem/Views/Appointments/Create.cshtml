@@ -1,0 +1,85 @@
+﻿@model MedicalBookingSystem.Models.Appointment
+
+@{
+    ViewData["Title"] = "Đặt Lịch Khám Mới";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="fas fa-calendar-plus me-2"></i>Đặt Lịch Khám Mới</h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Chọn Bác Sĩ *</label>
+                                    <select asp-for="DoctorId" class="form-select" required>
+                                        <option value="">-- Chọn bác sĩ --</option>
+                                        @foreach (var doctor in ViewBag.Doctors)
+                                        {
+                                            <option value="@doctor.Id">@doctor.Name - @doctor.Specialty?.Name</option>
+                                        }
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Họ tên bệnh nhân *</label>
+                                    <input asp-for="PatientName" class="form-control" placeholder="Nhập họ tên" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Email *</label>
+                                    <input asp-for="PatientEmail" type="email" class="form-control" placeholder="example@email.com" required>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Số điện thoại *</label>
+                                    <input asp-for="PatientPhone" class="form-control" placeholder="0123 456 789" required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Ngày khám *</label>
+                                    <input asp-for="AppointmentDate" type="date" class="form-control" required
+                                           min="@DateTime.Today.ToString("yyyy-MM-dd")">
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label">Giờ khám *</label>
+                                    <select asp-for="AppointmentTime" class="form-select" required>
+                                        <option value="">-- Chọn giờ --</option>
+                                        <option value="08:00">08:00</option>
+                                        <option value="09:00">09:00</option>
+                                        <option value="10:00">10:00</option>
+                                        <option value="14:00">14:00</option>
+                                        <option value="15:00">15:00</option>
+                                        <option value="16:00">16:00</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Triệu chứng (nếu có)</label>
+                            <textarea asp-for="Symptoms" class="form-control" rows="3" placeholder="Mô tả triệu chứng..."></textarea>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-calendar-check me-2"></i>Đặt Lịch
+                            </button>
+                            <a href="/Appointments" class="btn btn-secondary ms-2">
+                                <i class="fas fa-arrow-left me-2"></i>Quay Lại
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

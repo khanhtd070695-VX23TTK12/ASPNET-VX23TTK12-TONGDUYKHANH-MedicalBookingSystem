@@ -1,0 +1,101 @@
+﻿@model MedicalBookingSystem.Models.Doctor
+@{
+    ViewData["Title"] = "Chi Tiết Bác Sĩ";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <img src="/images/doctor-avatar.png" alt="Doctor Avatar"
+                         class="rounded-circle mb-3" width="150" height="150">
+                    <h4>@Model.Name</h4>
+
+                    <!-- CHỈ HIỂN THỊ CÁC PROPERTY CÓ THẬT -->
+                    @if (Model.Specialty != null)
+                    {
+                        <p class="text-primary fw-bold">@Model.Specialty.Name</p>
+                    }
+
+                    <div class="rating mb-3">
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            <i class="fas fa-star @(i <= Model.AverageRating ? "text-warning" : "text-muted")"></i>
+                        }
+                        <span class="ms-2">(@Model.TotalRatings đánh giá)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Thông Tin Chi Tiết</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-sm-4 fw-bold">Số giấy phép:</div>
+                        <div class="col-sm-8">@Model.MedicalLicense</div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-sm-4 fw-bold">Kinh nghiệm:</div>
+                        <div class="col-sm-8">@Model.Experience năm</div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-sm-4 fw-bold">Phí khám:</div>
+                        <div class="col-sm-8">@Model.ConsultationFee.ToString("N0") VNĐ</div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.Qualifications))
+                    {
+                        <div class="row mb-3">
+                            <div class="col-sm-4 fw-bold">Bằng cấp:</div>
+                            <div class="col-sm-8">@Model.Qualifications</div>
+                        </div>
+                    }
+
+                    @if (!string.IsNullOrEmpty(Model.Description))
+                    {
+                        <div class="row mb-3">
+                            <div class="col-sm-4 fw-bold">Giới thiệu:</div>
+                            <div class="col-sm-8">@Model.Description</div>
+                        </div>
+                    }
+
+                    <div class="row mb-3">
+                        <div class="col-sm-4 fw-bold">Trạng thái:</div>
+                        <div class="col-sm-8">
+                            @if (Model.IsAvailable)
+                            {
+                                <span class="badge bg-success">Đang tiếp nhận bệnh nhân</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">Tạm ngừng tiếp nhận</span>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <a href="/Appointments/Create?doctorId=@Model.Id" class="btn btn-primary btn-lg">
+                            <i class="fas fa-calendar-check me-2"></i>Đặt Lịch Khám
+                        </a>
+                        <a href="/Doctors" class="btn btn-outline-secondary ms-2">
+                            <i class="fas fa-arrow-left me-2"></i>Quay Lại
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .rating {
+        font-size: 1.2rem;
+    }
+</style>

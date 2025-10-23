@@ -1,0 +1,57 @@
+﻿@model IEnumerable<MedicalBookingSystem.Models.Doctor>
+
+@{
+    ViewData["Title"] = "Danh Sách Bác Sĩ";
+}
+
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Danh Sách Bác Sĩ</h1>
+
+    <div class="row">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var doctor in Model)
+            {
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body text-center">
+                            <img src="/images/doctor-avatar.png" alt="Doctor Avatar"
+                                 class="rounded-circle mb-3" width="100" height="100"
+                                 onerror="this.src='https://via.placeholder.com/100'">
+                            <h5 class="card-title">@doctor.Name</h5>
+
+                            @if (doctor.Specialty != null)
+                            {
+                                <p class="text-primary fw-bold">@doctor.Specialty.Name</p>
+                            }
+
+                            <p class="card-text">
+                                <small class="text-muted">
+                                    <i class="fas fa-briefcase me-2"></i>@doctor.Experience năm kinh nghiệm
+                                </small>
+                            </p>
+                            <p class="card-text">
+                                <small class="text-muted">
+                                    <i class="fas fa-money-bill-wave me-2"></i>@doctor.ConsultationFee.ToString("N0") VNĐ
+                                </small>
+                            </p>
+                            <div class="d-grid gap-2 mt-3">
+                                <a href="/Doctors/Details/@doctor.Id" class="btn btn-primary">
+                                    <i class="fas fa-info-circle me-2"></i>Xem Chi Tiết
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-user-md fa-3x text-muted mb-3"></i>
+                <h4 class="text-muted">Chưa có bác sĩ trong hệ thống</h4>
+                <p class="text-muted">Vui lòng quay lại sau</p>
+            </div>
+        }
+    </div>
+</div>
